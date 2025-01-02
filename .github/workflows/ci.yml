@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    concurrency: ci-${{ github.ref }}
+    env:
+      # Path to the release dist
+      DIST_PATH: dist
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 22
+        cache: 'npm'
+        # cache: 'yarn'
+
+    - name: Install
+      run: npm ci
+
+    - name: Build
+      run: npm run ci
+
+    - name: Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: ${{ env.DIST_PATH }}
+
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@v4
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      with:
+        folder: ${{ env.DIST_PATH }}
+        single-commit: true
