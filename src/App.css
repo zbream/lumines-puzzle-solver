@@ -1,0 +1,84 @@
+:root {
+  --board-border-color: black;
+  --board-tile-border: 8px solid var(--board-border-color);
+  --board-cell-border: 2px solid var(--board-border-color);
+
+  --board-cell-neutral-color: #8f8f8f;
+  --board-cell-primary-color: #F9F9F9;
+  --board-cell-secondary-color: #C93DFF;
+
+  --board-cell-vulnerable-color: black;
+  --board-cell-vulnerable-stripe-size: 4px;
+  --board-cell-vulnerable-stripe-gap-size: 8px;
+}
+
+.board {
+  border: var(--board-tile-border);
+  background-color: var(--board-border-color);
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.board tr:nth-child(odd) td {
+  border-top: var(--board-tile-border);
+}
+
+.board td:nth-child(odd) {
+  border-left: var(--board-tile-border);
+}
+
+.board td {
+  padding: 0;
+  border: var(--board-cell-border);
+  cursor: pointer;
+}
+
+.board td div {
+  width: 50px;
+  height: 50px;
+  border-radius: 2px;
+}
+
+.board td:hover div {
+  outline: 4px solid blue;
+}
+
+.board td[data-state="1"] div {
+  background: var(--board-cell-neutral-color);
+}
+
+.board td[data-state="2"] div {
+  background: var(--board-cell-primary-color);
+}
+
+.board td[data-state="3"] div {
+  background: repeating-linear-gradient(
+    45deg, 
+    var(--board-cell-primary-color),
+    var(--board-cell-primary-color) var(--board-cell-vulnerable-stripe-gap-size), 
+    var(--board-cell-vulnerable-color) var(--board-cell-vulnerable-stripe-gap-size),
+    var(--board-cell-vulnerable-color) calc(var(--board-cell-vulnerable-stripe-gap-size) + var(--board-cell-vulnerable-stripe-size))
+  );
+}
+
+.board td[data-state="4"] div {
+  background: var(--board-cell-secondary-color);
+}
+
+.board td[data-state="5"] div {
+  background: repeating-linear-gradient(
+    45deg, 
+    var(--board-cell-secondary-color),
+    var(--board-cell-secondary-color) var(--board-cell-vulnerable-stripe-gap-size), 
+    var(--board-cell-vulnerable-color) var(--board-cell-vulnerable-stripe-gap-size),
+    var(--board-cell-vulnerable-color) calc(var(--board-cell-vulnerable-stripe-gap-size) + var(--board-cell-vulnerable-stripe-size))
+  );
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  margin: 1em;
+}
